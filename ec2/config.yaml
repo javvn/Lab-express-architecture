@@ -1,0 +1,17 @@
+context:
+  key_path: "/Users/jawn/.ssh/lab-express-architecture"
+  key_name: "express-archi"
+
+ec2:
+  public:
+    name                       : "${name}-bastion"
+    instance_type              : "t2.micro"
+    key_name                   : "${key_name}"
+    monitoring                 : false
+    associate_public_ip_address: false
+  private:
+    name                       : "${name}-node-server"
+    instance_type              : "t2.micro"
+    key_name                   : "${key_name}"
+    monitoring                 : false
+    associate_public_ip_address: false

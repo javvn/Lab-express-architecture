@@ -8,22 +8,15 @@ output "common_tags" {
 
 output "network" {
   value = {
-    vpc = {
-      id         = module.vpc.vpc_id
-      name       = module.vpc.name
-      cidr_block = module.vpc.vpc_cidr_block
-      subnet_groups = {
-        public = {
-          id          = module.vpc.public_subnets
-          arn         = module.vpc.public_subnet_arns
-          cidr_blocks = module.vpc.public_subnets_cidr_blocks
-        }
-        private = {
-          id          = module.vpc.private_subnets
-          arn         = module.vpc.private_subnet_arns
-          cidr_blocks = module.vpc.private_subnets_cidr_blocks
-        }
-      }
+    vpc = { for k, v in module.vpc : k => v if contains(local.vpc_search_set, k) }
+    igw = { for k, v in module.vpc : k => v if contains(local.igw_search_set, k) }
+    route_table = {
+      public  = { for k, v in module.vpc : k => v if contains(local.public_rt_search_set, k) }
+      private = { for k, v in module.vpc : k => v if contains(local.private_rt_search_set, k) }
+    }
+    subnet_groups = {
+      public  = { for k, v in module.vpc : k => v if contains(local.public_subnet_search_set, k) }
+      private = { for k, v in module.vpc : k => v if contains(local.private_subnet_search_set, k) }
     }
     security_groups = module.sg
   }
