@@ -12,6 +12,14 @@ locals {
   subnet_groups_context   = yamldecode(templatefile(var.config_file, local.context)).network.subnet_groups
   security_groups_context = yamldecode(templatefile(var.config_file, local.context)).network.security_groups
 
+  vpc_search_set            = ["vpc_arn", "vpc_cidr_block", "vpc_id", "name", "azs"]
+  igw_search_set            = ["igw_id", "igw_arn"]
+  private_rt_search_set     = ["private_route_table_ids", "private_route_table_association_ids"]
+  private_subnet_search_set = ["private_subnet_arns", "private_subnets", "private_subnets_cidr_blocks"]
+  public_rt_search_set      = ["public_route_table_ids", "public_route_table_association_ids"]
+  public_subnet_search_set  = ["public_subnet_arns", "public_subnets", "public_subnets_cidr_blocks"]
+
+
   vpc_tags = merge(local.common_tags, {
     Name = local.vpc_context.name
   })
