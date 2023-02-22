@@ -30,12 +30,6 @@ resource "aws_lb_target_group" "this" {
   depends_on = [aws_alb.this]
 }
 
-//resource "aws_lb_target_group_attachment" "this" {
-//  port             = local.resource_context.alb_tg_attachment.port
-//  target_id        = module.ec2.public.id
-//  target_group_arn = aws_lb_target_group.this.arn
-//}
-
 resource "aws_lb_listener" "this" {
   load_balancer_arn = aws_alb.this.arn
   port              = local.resource_context.alb_listener.port
