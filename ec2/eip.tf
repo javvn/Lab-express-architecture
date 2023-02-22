@@ -1,9 +1,9 @@
 resource "aws_eip" "bastion" {
-  instance = module.bastion.public.id
+  instance = module.ec2.public.id
   vpc      = true
   tags     = local.eip_tags
 
   depends_on = [
-    module.bastion
+    module.ec2
   ]
 }

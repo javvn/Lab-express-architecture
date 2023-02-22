@@ -1,6 +1,7 @@
 context:
   key_path: "/Users/jawn/.ssh/lab-express-architecture"
   key_name: "express-archi"
+  name    : "express-archi"
 
 ec2:
   public:
