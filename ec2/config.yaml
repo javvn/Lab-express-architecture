@@ -2,6 +2,8 @@ context:
   key_path: "/Users/jawn/.ssh/lab-express-architecture"
   key_name: "express-archi"
   name    : "express-archi"
+  app_port: 80
+  protocol: "HTTP"
 
 ec2:
   public:
@@ -10,9 +12,62 @@ ec2:
     key_name                   : "${key_name}"
     monitoring                 : false
     associate_public_ip_address: false
-  private:
-    name                       : "${name}-node-server"
-    instance_type              : "t2.micro"
-    key_name                   : "${key_name}"
-    monitoring                 : false
-    associate_public_ip_address: false
+#  private:
+#    name                       : "${name}-node-server"
+#    instance_type              : "t2.micro"
+#    key_name                   : "${key_name}"
+#    monitoring                 : false
+#    associate_public_ip_address: false
+
+eip:
+  name: "${name}-bastion-eip"
+
+alb:
+  name                       : "${name}-alb"
+  internal                   : false
+  load_balancer_type         : "application"
+  ip_address_type            : "ipv4"
+  enable_deletion_protection : false
+  access_logs                :
+    bucket                   : ""
+    prefix                   : ""
+    enabled                  : false
+
+alb_tg:
+  name                          : "${name}-alb-tg"
+  port                          : ${app_port}
+  protocol                      : ${protocol}
+  protocol_version              : "HTTP1"
+  target_type                   : "instance"
+  load_balancing_algorithm_type : "round_robin"
+
+alb_listener:
+  name              : "${name}-alb-listener"
+  port              : ${app_port}
+  protocol          : ${protocol}
+  ssl_policy        : ""
+  default_action    :
+    type            : "forward"
+
+launch_template:
+  name                                : "${name}-node-server-lt"
+  key_name                            : "${key_name}"
+  monitoring                          : false
+  description                         : "For node server auto scaling"
+  instance_type                       : "t2.micro"
+  instance_initiated_shutdown_behavior: "terminate"
+  tag_spec                            :
+    resource_type                     : "instance"
+    name                              : "${name}-node-server"
+
+auto_scaling:
+  name                     : "${name}-node-server-as"
+  max_size                 : 5
+  min_size                 : 2
+  desired_capacity         : 2
+  force_delete             : true
+  health_check_type        : "EC2"
+  health_check_grace_period: 300
+  launch_template          :
+    version                : "$Default"
+

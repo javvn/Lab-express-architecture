@@ -26,7 +26,12 @@
 
 | Name | Type |
 |------|------|
+| [aws_alb.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/alb) | resource |
+| [aws_autoscaling_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
 | [aws_eip.bastion](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
+| [aws_launch_template.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
+| [aws_lb_listener.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [null_resource.bastion](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [aws_ami.amazon](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [terraform_remote_state.vpc](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
@@ -41,8 +46,8 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_ec2_ami"></a> [ec2\_ami](#output\_ec2\_ami) | n/a |
-| <a name="output_ec2_context"></a> [ec2\_context](#output\_ec2\_context) | n/a |
-| <a name="output_ec2_eip"></a> [ec2\_eip](#output\_ec2\_eip) | n/a |
+| <a name="output_alb"></a> [alb](#output\_alb) | n/a |
+| <a name="output_asg"></a> [asg](#output\_asg) | n/a |
 | <a name="output_ec2_instances"></a> [ec2\_instances](#output\_ec2\_instances) | n/a |
+| <a name="output_remote_state"></a> [remote\_state](#output\_remote\_state) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
