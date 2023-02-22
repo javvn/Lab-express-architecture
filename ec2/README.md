@@ -46,8 +46,8 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_ec2_ami"></a> [ec2\_ami](#output\_ec2\_ami) | n/a |
-| <a name="output_ec2_context"></a> [ec2\_context](#output\_ec2\_context) | n/a |
-| <a name="output_ec2_eip"></a> [ec2\_eip](#output\_ec2\_eip) | n/a |
+| <a name="output_alb"></a> [alb](#output\_alb) | n/a |
+| <a name="output_asg"></a> [asg](#output\_asg) | n/a |
 | <a name="output_ec2_instances"></a> [ec2\_instances](#output\_ec2\_instances) | n/a |
+| <a name="output_remote_state"></a> [remote\_state](#output\_remote\_state) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
