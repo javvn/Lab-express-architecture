@@ -60,3 +60,14 @@ launch_template:
     resource_type                     : "instance"
     name                              : "${name}-node-server"
 
+auto_scaling:
+  name                     : "${name}-node-server-as"
+  max_size                 : 5
+  min_size                 : 2
+  desired_capacity         : 2
+  force_delete             : true
+  health_check_type        : "EC2"
+  health_check_grace_period: 300
+  launch_template          :
+    version                : "$Default"
+
