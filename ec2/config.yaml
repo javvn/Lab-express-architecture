@@ -5,19 +5,25 @@ context:
   app_port: 80
   protocol: "HTTP"
 
+role:
+  name: "${name}-EC2Role"
+
+role_policy:
+  name: "${name}-EC2Access"
+
 ec2:
   public:
     name                       : "${name}-bastion"
     instance_type              : "t2.micro"
     key_name                   : "${key_name}"
-    monitoring                 : false
-    associate_public_ip_address: false
-#  private:
-#    name                       : "${name}-node-server"
-#    instance_type              : "t2.micro"
-#    key_name                   : "${key_name}"
-#    monitoring                 : false
-#    associate_public_ip_address: false
+    monitoring                 : true
+    associate_public_ip_address: true
+
+ec2_instances_state:
+  use  : false
+  state: "stopped"
+  force: true
+
 
 eip:
   name: "${name}-bastion-eip"

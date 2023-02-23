@@ -15,22 +15,36 @@ data "aws_ami" "amazon" {
   }
 }
 
+//data "aws_instances" "asg" {
+//  instance_tags = {
+//    CreatedByType = "ASG"
+//  }
+//
+//  instance_state_names = ["running"]
+//
+//  depends_on = [aws_autoscaling_group.this]
+//}
+
+
 module "ec2" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 3.0"
 
   for_each = local.resource_context.ec2
 
-  ami                    = data.aws_ami.amazon.image_id
-  name                   = each.value.name
-  key_name               = each.value.key_name
-  user_data              = each.value.user_data
-  subnet_id              = each.value.subnet_id
-  monitoring             = each.value.monitoring
-  instance_type          = each.value.instance_type
-  vpc_security_group_ids = each.value.vpc_security_group_ids
-  tags                   = merge(local.common_tags, { Name = each.value.name })
-  //  iam_instance_profile = aws_iam_instance_profile.ec2.name
+  ami                         = data.aws_ami.amazon.image_id
+  name                        = each.value.name
+  key_name                    = each.value.key_name
+  user_data                   = each.value.user_data
+  subnet_id                   = each.value.subnet_id
+  monitoring                  = each.value.monitoring
+  instance_type               = each.value.instance_type
+  vpc_security_group_ids      = each.value.vpc_security_group_ids
+  associate_public_ip_address = each.value.associate_public_ip_address
+  tags                        = merge(local.common_tags, { Name = each.value.name })
+  iam_instance_profile        = aws_iam_instance_profile.ec2.name
+
+  depends_on = [aws_iam_instance_profile.ec2]
 }
 
 resource "null_resource" "bastion" {
@@ -70,6 +84,10 @@ resource "aws_launch_template" "this" {
   instance_initiated_shutdown_behavior = local.resource_context.launch_template.instance_initiated_shutdown_behavior
   tags                                 = merge(local.common_tags, { Name = local.resource_context.launch_template.name })
 
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ec2.name
+  }
+
   monitoring {
     enabled = local.resource_context.launch_template.monitoring
   }
@@ -83,4 +101,13 @@ resource "aws_launch_template" "this" {
     resource_type = local.resource_context.launch_template.tag_spec.resource_type
     tags          = merge(local.common_tags, { Name = local.resource_context.launch_template.tag_spec.name })
   }
+
+  depends_on = [aws_iam_instance_profile.ec2]
+}
+
+resource "aws_ec2_instance_state" "this" {
+  count       = local.resource_context.ec2_instances_state.use ? 1 : 0
+  instance_id = module.ec2["public"].id
+  state       = local.resource_context.ec2_instances_state.state
+  force       = local.resource_context.ec2_instances_state.force
 }
